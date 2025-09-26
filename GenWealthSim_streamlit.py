@@ -64,24 +64,35 @@ def per_capita_wealth(df_total, family_members_dict):
 
 # ------------------ Streamlit UI ------------------
 st.set_page_config(layout="wide")
-st.title("Generational Wealth Simulator (Plotly)")
+st.title("Generational Wealth Simulator Dashboard")
 
-# Sidebar: Simulation parameters
+# Light background
+st.markdown(
+    """
+    <style>
+    .stApp {
+        background-color: #f7f7f7;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
+# ------------------ Sidebar Inputs ------------------
 st.sidebar.header("Simulation Parameters")
 years = st.sidebar.slider("Years to Simulate", 10, 200, 100)
 sigma = st.sidebar.slider("Volatility (sigma)", 0.0, 0.2, 0.05, 0.01)
 n_sim = st.sidebar.slider("Monte Carlo Simulations", 10, 2000, 1000, 10)
 
-# Sidebar: Family Members
 st.sidebar.header("Family Members")
 num_members_start = st.sidebar.slider("Members Start Period", 1, 10, 4)
 num_members_mid = st.sidebar.slider("Members Mid Period", 1, 10, 5)
 num_members_end = st.sidebar.slider("Members End Period", 1, 10, 3)
+
 family_members = {y: num_members_start for y in range(0, int(years/3))}
 family_members.update({y: num_members_mid for y in range(int(years/3), int(2*years/3))})
 family_members.update({y: num_members_end for y in range(int(2*years/3), years+1)})
 
-# Sidebar: Investment Blocks
 st.sidebar.header("Investment Blocks")
 if "blocks" not in st.session_state:
     st.session_state.blocks = [
@@ -99,18 +110,37 @@ if add_block:
 if remove_block and len(st.session_state.blocks) > 1:
     st.session_state.blocks.pop()
 
-# Collapsible sections for block parameters
+# ------------------ Investment Block Config ------------------
 for i, block in enumerate(st.session_state.blocks):
     with st.expander(f"Block {i+1}: {block.name}", expanded=False):
         block.name = st.text_input(f"Block Name {i+1}", block.name)
         block.initial = st.number_input(f"Initial Value ({block.name})", min_value=0.0, value=float(block.initial), step=10000.0)
-        start_growth = st.slider(f"{block.name} Growth Start", -0.2, 0.2, float(get_rate(block.annual_growth,0)), 0.01)
-        mid_growth = st.slider(f"{block.name} Growth Mid-Year", -0.2, 0.2, float(get_rate(block.annual_growth,int(years/2))), 0.01)
+
+        # Sliders for simple 2-point growth/spend rates
+        col1, col2 = st.columns(2)
+        with col1:
+            start_growth = st.slider(f"{block.name} Growth Start", -0.2, 0.2, float(get_rate(block.annual_growth,0)), 0.01)
+            mid_growth = st.slider(f"{block.name} Growth Mid-Year", -0.2, 0.2, float(get_rate(block.annual_growth,int(years/2))), 0.01)
+        with col2:
+            start_spend = st.slider(f"{block.name} Spend Start", 0.0, 0.2, float(get_rate(block.annual_spend_rate,0)),0.01)
+            mid_spend = st.slider(f"{block.name} Spend Mid-Year", 0.0, 0.2, float(get_rate(block.annual_spend_rate,int(years/2))),0.01)
+
         block.annual_growth = {0: start_growth, int(years/2): mid_growth}
-        start_spend = st.slider(f"{block.name} Spend Start", 0.0, 0.2, float(get_rate(block.annual_spend_rate,0)),0.01)
-        mid_spend = st.slider(f"{block.name} Spend Mid-Year", 0.0, 0.2, float(get_rate(block.annual_spend_rate,int(years/2))),0.01)
         block.annual_spend_rate = {0: start_spend, int(years/2): mid_spend}
 
+        # Optional JSON input for full-year points
+        st.markdown("**Optional: Enter JSON for Growth/Spend Rates (year:value)**")
+        growth_json = st.text_area(f"{block.name} Growth JSON", json.dumps(block.annual_growth))
+        spend_json = st.text_area(f"{block.name} Spend JSON", json.dumps(block.annual_spend_rate))
+        try:
+            growth_dict = {int(k): float(v) for k,v in json.loads(growth_json).items()}
+            spend_dict = {int(k): float(v) for k,v in json.loads(spend_json).items()}
+            block.annual_growth = growth_dict
+            block.annual_spend_rate = spend_dict
+        except:
+            st.warning("Invalid JSON input for growth/spend rates")
+
+        # Contributions and big spends (JSON)
         contrib_input = st.text_area(f"{block.name} Contributions (JSON year:value)", json.dumps(block.contributions), height=80)
         try:
             block.contributions = {int(k): float(v) for k,v in json.loads(contrib_input).items()}
@@ -122,10 +152,10 @@ for i, block in enumerate(st.session_state.blocks):
         except:
             st.warning("Invalid JSON for big spend events")
 
-# Run simulation
+# ------------------ Run Simulation ------------------
 df = simulate_blocks(st.session_state.blocks, years=years)
 
-# Monte Carlo Total Wealth
+# Monte Carlo simulation for Total Wealth
 total_wealth_matrix = np.array([simulate_blocks(st.session_state.blocks, years=years, stochastic=True, sigma=sigma)['Total'].values
                                 for _ in range(n_sim)])
 mean_total = total_wealth_matrix.mean(axis=0)
@@ -134,38 +164,40 @@ upper = np.percentile(total_wealth_matrix, 95, axis=0)
 
 # ------------------ Plotly Plot ------------------
 fig = go.Figure()
-
-colors = ['#636EFA', '#EF553B', '#00CC96', '#AB63FA', '#FFA15A', '#19D3F3']
+colors = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b']
 
 # Individual blocks
 for i, b in enumerate(st.session_state.blocks):
     fig.add_trace(go.Scatter(x=df.index, y=df[b.name],
                              mode='lines',
                              name=b.name,
-                             line=dict(color=colors[i % len(colors)])))
+                             line=dict(color=colors[i % len(colors)], width=3)))
 
 # Total Wealth (mean)
 fig.add_trace(go.Scatter(x=df.index, y=mean_total,
                          mode='lines',
                          name='Total Wealth (Mean)',
-                         line=dict(color='black', width=3, dash='dash')))
+                         line=dict(color='#000000', width=4)))
 
 # Confidence interval
 fig.add_trace(go.Scatter(
     x=list(df.index)+list(df.index[::-1]),
     y=list(upper)+list(lower[::-1]),
     fill='toself',
-    fillcolor='rgba(128,128,128,0.3)',
+    fillcolor='rgba(100,100,100,0.2)',
     line=dict(color='rgba(255,255,255,0)'),
     hoverinfo="skip",
     showlegend=True,
     name='5–95% CI'
 ))
 
-fig.update_layout(title="Generational Wealth Over Time (Interactive)",
-                  xaxis_title="Year", yaxis_title="Value ($)",
-                  yaxis_tickprefix="$",
-                  hovermode="x unified")
+fig.update_layout(title="Generational Wealth Over Time",
+                  xaxis_title="Year",
+                  yaxis_title="Value ($)",
+                  plot_bgcolor='white',
+                  paper_bgcolor='white',
+                  hovermode="x unified",
+                  legend=dict(bgcolor='rgba(255,255,255,0.5)'))
 st.plotly_chart(fig, use_container_width=True)
 
 # ------------------ Per-Capita Wealth ------------------
