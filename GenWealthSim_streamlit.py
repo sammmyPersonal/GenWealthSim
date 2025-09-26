@@ -188,8 +188,8 @@ fig.update_layout(title="Generational Wealth Over Time",
                   xaxis_title="Year", yaxis_title="Value ($)",
                   plot_bgcolor='#f0f2f6', paper_bgcolor='#f0f2f6',
                   font=dict(color="#111111"),
-                  xaxis=dict(tickfont=dict(color="#111111"), titlefont=dict(color="#111111")),
-                  yaxis=dict(tickfont=dict(color="#111111"), titlefont=dict(color="#111111")),
+                  xaxis=dict(tickfont=dict(color="#111111"), tickfont=dict(color="#111111")),
+                  yaxis=dict(tickfont=dict(color="#111111"), tickfont=dict(color="#111111")),
                   hovermode="x unified", legend=dict(bgcolor='rgba(255,255,255,0.5)'))
 st.plotly_chart(fig, use_container_width=True)
 
@@ -201,6 +201,6 @@ pc_fig.update_layout(title="Per-Capita Wealth Over Time",
                      xaxis_title="Year", yaxis_title="Value per Person ($)",
                      plot_bgcolor='#f0f2f6', paper_bgcolor='#f0f2f6',
                      font=dict(color="#111111"),
-                     xaxis=dict(tickfont=dict(color="#111111"), titlefont=dict(color="#111111")),
-                     yaxis=dict(tickfont=dict(color="#111111"), titlefont=dict(color="#111111")))
+                     xaxis=dict(tickfont=dict(color="#111111"), tickfont=dict(color="#111111")),
+                     yaxis=dict(tickfont=dict(color="#111111"), tickfont=dict(color="#111111")))
 st.plotly_chart(pc_fig, use_container_width=True)
