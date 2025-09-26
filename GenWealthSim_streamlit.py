@@ -1,11 +1,10 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
 from dataclasses import dataclass, field
 from typing import Dict, List, Union
-import matplotlib.ticker as mtick
 import json
+import plotly.graph_objects as go
 
 # ------------------ Backend Logic ------------------
 @dataclass
@@ -65,7 +64,7 @@ def per_capita_wealth(df_total, family_members_dict):
 
 # ------------------ Streamlit UI ------------------
 st.set_page_config(layout="wide")
-st.title("Generational Wealth Simulator Dashboard")
+st.title("Generational Wealth Simulator (Plotly)")
 
 # Sidebar: Simulation parameters
 st.sidebar.header("Simulation Parameters")
@@ -78,7 +77,6 @@ st.sidebar.header("Family Members")
 num_members_start = st.sidebar.slider("Members Start Period", 1, 10, 4)
 num_members_mid = st.sidebar.slider("Members Mid Period", 1, 10, 5)
 num_members_end = st.sidebar.slider("Members End Period", 1, 10, 3)
-
 family_members = {y: num_members_start for y in range(0, int(years/3))}
 family_members.update({y: num_members_mid for y in range(int(years/3), int(2*years/3))})
 family_members.update({y: num_members_end for y in range(int(2*years/3), years+1)})
@@ -101,20 +99,18 @@ if add_block:
 if remove_block and len(st.session_state.blocks) > 1:
     st.session_state.blocks.pop()
 
-# Collapsible sections for each block
+# Collapsible sections for block parameters
 for i, block in enumerate(st.session_state.blocks):
     with st.expander(f"Block {i+1}: {block.name}", expanded=False):
         block.name = st.text_input(f"Block Name {i+1}", block.name)
         block.initial = st.number_input(f"Initial Value ({block.name})", min_value=0.0, value=float(block.initial), step=10000.0)
-        # Growth rates
         start_growth = st.slider(f"{block.name} Growth Start", -0.2, 0.2, float(get_rate(block.annual_growth,0)), 0.01)
         mid_growth = st.slider(f"{block.name} Growth Mid-Year", -0.2, 0.2, float(get_rate(block.annual_growth,int(years/2))), 0.01)
         block.annual_growth = {0: start_growth, int(years/2): mid_growth}
-        # Spend rates
         start_spend = st.slider(f"{block.name} Spend Start", 0.0, 0.2, float(get_rate(block.annual_spend_rate,0)),0.01)
         mid_spend = st.slider(f"{block.name} Spend Mid-Year", 0.0, 0.2, float(get_rate(block.annual_spend_rate,int(years/2))),0.01)
         block.annual_spend_rate = {0: start_spend, int(years/2): mid_spend}
-        # Contributions and big spends (JSON)
+
         contrib_input = st.text_area(f"{block.name} Contributions (JSON year:value)", json.dumps(block.contributions), height=80)
         try:
             block.contributions = {int(k): float(v) for k,v in json.loads(contrib_input).items()}
@@ -129,27 +125,48 @@ for i, block in enumerate(st.session_state.blocks):
 # Run simulation
 df = simulate_blocks(st.session_state.blocks, years=years)
 
-# Monte Carlo simulation
+# Monte Carlo Total Wealth
 total_wealth_matrix = np.array([simulate_blocks(st.session_state.blocks, years=years, stochastic=True, sigma=sigma)['Total'].values
                                 for _ in range(n_sim)])
 mean_total = total_wealth_matrix.mean(axis=0)
 lower = np.percentile(total_wealth_matrix, 5, axis=0)
 upper = np.percentile(total_wealth_matrix, 95, axis=0)
 
-# ------------------ Plots ------------------
-fig, ax = plt.subplots(figsize=(12,7))
-colors = plt.cm.tab10.colors
+# ------------------ Plotly Plot ------------------
+fig = go.Figure()
+
+colors = ['#636EFA', '#EF553B', '#00CC96', '#AB63FA', '#FFA15A', '#19D3F3']
+
+# Individual blocks
 for i, b in enumerate(st.session_state.blocks):
-    ax.plot(df.index, df[b.name], label=b.name, color=colors[i % len(colors)])
-ax.plot(df.index, mean_total, color='black', linewidth=2.5, linestyle='--', label='Total Wealth (Mean)')
-ax.fill_between(df.index, lower, upper, color='gray', alpha=0.3, label='5–95% CI')
-ax.set_xlabel("Year")
-ax.set_ylabel("Value ($)")
-ax.set_title("Generational Wealth Over Time")
-ax.legend()
-ax.grid(True)
-ax.yaxis.set_major_formatter(mtick.StrMethodFormatter('${x:,.0f}'))
-st.pyplot(fig)
+    fig.add_trace(go.Scatter(x=df.index, y=df[b.name],
+                             mode='lines',
+                             name=b.name,
+                             line=dict(color=colors[i % len(colors)])))
+
+# Total Wealth (mean)
+fig.add_trace(go.Scatter(x=df.index, y=mean_total,
+                         mode='lines',
+                         name='Total Wealth (Mean)',
+                         line=dict(color='black', width=3, dash='dash')))
+
+# Confidence interval
+fig.add_trace(go.Scatter(
+    x=list(df.index)+list(df.index[::-1]),
+    y=list(upper)+list(lower[::-1]),
+    fill='toself',
+    fillcolor='rgba(128,128,128,0.3)',
+    line=dict(color='rgba(255,255,255,0)'),
+    hoverinfo="skip",
+    showlegend=True,
+    name='5–95% CI'
+))
+
+fig.update_layout(title="Generational Wealth Over Time (Interactive)",
+                  xaxis_title="Year", yaxis_title="Value ($)",
+                  yaxis_tickprefix="$",
+                  hovermode="x unified")
+st.plotly_chart(fig, use_container_width=True)
 
 # ------------------ Per-Capita Wealth ------------------
 pc_wealth = per_capita_wealth(df, family_members)
