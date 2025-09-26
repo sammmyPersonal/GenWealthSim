@@ -66,12 +66,29 @@ def per_capita_wealth(df_total, family_members_dict):
 st.set_page_config(layout="wide")
 st.title("Generational Wealth Simulator Dashboard")
 
-# Light background
+# ------------------ Page Theme / CSS ------------------
 st.markdown(
     """
     <style>
+    /* Page background */
     .stApp {
-        background-color: #f7f7f7;
+        background-color: #f0f2f6;
+        color: #111111;
+    }
+    /* Sidebar background */
+    .css-1d391kg {
+        background-color: #e8eaf6;
+    }
+    /* Input boxes and text areas */
+    .stTextInput>div>div>input, .stNumberInput>div>div>input, .stTextArea>div>div>textarea {
+        background-color: #ffffff;
+        color: #111111;
+    }
+    /* Expander headers */
+    .st-expander header {
+        background-color: #d1d9ff;
+        color: #111111;
+        font-weight: bold;
     }
     </style>
     """,
@@ -194,10 +211,11 @@ fig.add_trace(go.Scatter(
 fig.update_layout(title="Generational Wealth Over Time",
                   xaxis_title="Year",
                   yaxis_title="Value ($)",
-                  plot_bgcolor='white',
-                  paper_bgcolor='white',
+                  plot_bgcolor='#f0f2f6',
+                  paper_bgcolor='#f0f2f6',
                   hovermode="x unified",
-                  legend=dict(bgcolor='rgba(255,255,255,0.5)'))
+                  legend=dict(bgcolor='rgba(255,255,255,0.5)'),
+                  font=dict(color="#111111"))
 st.plotly_chart(fig, use_container_width=True)
 
 # ------------------ Per-Capita Wealth ------------------
