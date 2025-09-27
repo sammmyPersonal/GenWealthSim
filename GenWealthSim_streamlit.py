@@ -176,8 +176,8 @@ for i, block in enumerate(st.session_state.blocks):
         # Sliders for growth/spend
         col1, col2 = st.columns(2)
         with col1:
-            start_growth = st.slider(f"{block.name} Growth Start", -0.2, 0.2, float(get_rate(block.annual_growth,0)), 0.01)
-            mid_growth = st.slider(f"{block.name} Growth Mid-Year", -0.2, 0.2, float(get_rate(block.annual_growth,int(years/2))), 0.01)
+            start_growth = st.slider(f"{block.name} Growth Start", 0.0, 0.2, float(get_rate(block.annual_growth,0)), 0.01)
+            mid_growth = st.slider(f"{block.name} Growth Mid-Year", 0.0, 0.2, float(get_rate(block.annual_growth,int(years/2))), 0.01)
         with col2:
             start_spend = st.slider(f"{block.name} Spend Start", 0.0, 0.2, float(get_rate(block.annual_spend_rate,0)),0.01)
             mid_spend = st.slider(f"{block.name} Spend Mid-Year", 0.0, 0.2, float(get_rate(block.annual_spend_rate,int(years/2))),0.01)
