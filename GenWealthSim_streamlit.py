@@ -94,7 +94,7 @@ st.markdown(
     /* Expander headers */
     .st-expander header { 
         background-color: #d1d9ff; 
-        color: #000000 !important; 
+        color: #111111 !important; 
         font-weight: bold; 
     }
 
@@ -106,7 +106,7 @@ st.markdown(
 
     /* Slider labels */
     .stSlider>div>div>div>div>div>span { 
-        color: #000000; 
+        color: #111111; 
     }
 </style>
 
