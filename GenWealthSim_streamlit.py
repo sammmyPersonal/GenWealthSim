@@ -104,11 +104,18 @@ st.markdown(
         color: #000000;   /* Changed button text color to black */
     }
 
-    /* Slider labels and values */
+    /* Main page sliders → black labels */
     .stSlider label, 
     .stSlider span, 
     .stSlider div[data-baseweb="slider"] {
         color: #111111 !important;
+    }
+
+    /* Sidebar sliders → white labels */
+    .stSidebar .stSlider label, 
+    .stSidebar .stSlider span, 
+    .stSidebar .stSlider div[data-baseweb="slider"] {
+        color: #ffffff !important;
     }
 </style>
 
