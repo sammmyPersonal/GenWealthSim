@@ -6,6 +6,7 @@ from typing import Dict, List, Union
 import json
 import plotly.graph_objects as go
 
+
 # ------------------ Backend Logic ------------------
 @dataclass
 class InvestmentBlock:
