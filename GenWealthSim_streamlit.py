@@ -104,9 +104,11 @@ st.markdown(
         color: #000000;   /* Changed button text color to black */
     }
 
-    /* Slider labels */
-    .stSlider>div>div>div>div>div>span { 
-        color: #111111; 
+    /* Slider labels and values */
+    .stSlider label, 
+    .stSlider span, 
+    .stSlider div[data-baseweb="slider"] {
+        color: #111111 !important;
     }
 </style>
 
