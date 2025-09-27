@@ -173,14 +173,48 @@ for i, block in enumerate(st.session_state.blocks):
         block.name = st.text_input(f"Block Name {i+1}", block.name)
         block.initial = st.number_input(f"Initial Value ({block.name})", min_value=0.0, value=float(block.initial), step=10000.0)
 
-        # Sliders for growth/spend
-        col1, col2 = st.columns(2)
-        with col1:
-            start_growth = st.slider(f"{block.name} Growth Start", 0.0, 0.2, float(get_rate(block.annual_growth,0)), 0.01)
-            mid_growth = st.slider(f"{block.name} Growth Mid-Year", 0.0, 0.2, float(get_rate(block.annual_growth,int(years/2))), 0.01)
-        with col2:
-            start_spend = st.slider(f"{block.name} Spend Start", 0.0, 0.2, float(get_rate(block.annual_spend_rate,0)),0.01)
-            mid_spend = st.slider(f"{block.name} Spend Mid-Year", 0.0, 0.2, float(get_rate(block.annual_spend_rate,int(years/2))),0.01)
+        # # Sliders for growth/spend
+        # col1, col2 = st.columns(2)
+        # with col1:
+        #     start_growth = st.slider(f"{block.name} Growth Start", 0.0, 0.2, float(get_rate(block.annual_growth,0)), 0.01)
+        #     mid_growth = st.slider(f"{block.name} Growth Mid-Year", 0.0, 0.2, float(get_rate(block.annual_growth,int(years/2))), 0.01)
+        # with col2:
+        #     start_spend = st.slider(f"{block.name} Spend Start", 0.0, 0.2, float(get_rate(block.annual_spend_rate,0)),0.01)
+        #     mid_spend = st.slider(f"{block.name} Spend Mid-Year", 0.0, 0.2, float(get_rate(block.annual_spend_rate,int(years/2))),0.01)
+
+        # Row 1: Growth sliders
+        growth_col1, growth_col2 = st.columns(2)
+        with growth_col1:
+            start_growth = st.slider(
+                f"{block.name} Growth Start",
+                0.0, 0.2,
+                float(get_rate(block.annual_growth, 0)),
+                0.01
+            )
+        with growth_col2:
+            mid_growth = st.slider(
+                f"{block.name} Growth Mid-Year",
+                0.0, 0.2,
+                float(get_rate(block.annual_growth, int(years/2))),
+                0.01
+            )
+        
+        # Row 2: Spend sliders
+        spend_col1, spend_col2 = st.columns(2)
+        with spend_col1:
+            start_spend = st.slider(
+                f"{block.name} Spend Start",
+                0.0, 0.2,
+                float(get_rate(block.annual_spend_rate, 0)),
+                0.01
+            )
+        with spend_col2:
+            mid_spend = st.slider(
+                f"{block.name} Spend Mid-Year",
+                0.0, 0.2,
+                float(get_rate(block.annual_spend_rate, int(years/2))),
+                0.01
+            )
 
         block.annual_growth = {0: start_growth, int(years/2): mid_growth}
         block.annual_spend_rate = {0: start_spend, int(years/2): mid_spend}
