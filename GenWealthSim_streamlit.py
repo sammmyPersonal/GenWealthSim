@@ -209,14 +209,28 @@ fig.add_trace(go.Scatter(x=list(df.index)+list(df.index[::-1]),
                          fill='toself', fillcolor='rgba(100,100,100,0.2)',
                          line=dict(color='rgba(255,255,255,0)'), hoverinfo="skip", name='5–95% CI'))
 
-fig.update_layout(title="Generational Wealth Over Time",
-                  xaxis_title="Year", yaxis_title="Value ($)",
-                  plot_bgcolor='#f0f2f6', paper_bgcolor='#f0f2f6',
-                  font=dict(color="#111111"),
-                  xaxis=dict(tickfont=dict(color="#111111")),
-                  yaxis=dict(tickfont=dict(color="#111111")),
-                  hovermode="x unified", legend=dict(bgcolor='rgba(255,255,255,0.5)'))
+fig.update_layout(
+    title=dict(
+        text="Generational Wealth Over Time",
+        font=dict(color="#111111", size=20)
+    ),
+    xaxis=dict(
+        title=dict(text="Year", font=dict(color="#111111", size=16)),
+        tickfont=dict(color="#111111")
+    ),
+    yaxis=dict(
+        title=dict(text="Value ($)", font=dict(color="#111111", size=16)),
+        tickfont=dict(color="#111111")
+    ),
+    plot_bgcolor='#f0f2f6',
+    paper_bgcolor='#f0f2f6',
+    font=dict(color="#111111"),
+    hovermode="x unified",
+    legend=dict(bgcolor='rgba(255,255,255,0.5)', font=dict(color="#111111"))
+)
+
 st.plotly_chart(fig, use_container_width=True)
+
 
 # ------------------ Per-Capita Wealth Plot ------------------
 pc_wealth = per_capita_wealth(df, family_members)
