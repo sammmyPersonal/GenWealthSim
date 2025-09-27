@@ -212,9 +212,9 @@ fig.add_trace(go.Scatter(x=list(df.index)+list(df.index[::-1]),
 fig.update_layout(title="Generational Wealth Over Time",
                   xaxis_title="Year", yaxis_title="Value ($)",
                   plot_bgcolor='#f0f2f6', paper_bgcolor='#f0f2f6',
-                  font=dict(color="#000000"),
-                  xaxis=dict(tickfont=dict(color="#000000")),
-                  yaxis=dict(tickfont=dict(color="#000000")),
+                  font=dict(color="#111111"),
+                  xaxis=dict(tickfont=dict(color="#111111")),
+                  yaxis=dict(tickfont=dict(color="#111111")),
                   hovermode="x unified", legend=dict(bgcolor='rgba(255,255,255,0.5)'))
 st.plotly_chart(fig, use_container_width=True)
 
@@ -225,7 +225,7 @@ pc_fig.add_trace(go.Scatter(x=pc_wealth.index, y=pc_wealth.values, mode='lines+m
 pc_fig.update_layout(title="Per-Capita Wealth Over Time",
                      xaxis_title="Year", yaxis_title="Value per Person ($)",
                      plot_bgcolor='#f0f2f6', paper_bgcolor='#f0f2f6',
-                     font=dict(color="#000000"),
-                     xaxis=dict(tickfont=dict(color="#000000")),
-                     yaxis=dict(tickfont=dict(color="#000000")))
+                     font=dict(color="#111111"),
+                     xaxis=dict(tickfont=dict(color="#111111")),
+                     yaxis=dict(tickfont=dict(color="#111111")))
 st.plotly_chart(pc_fig, use_container_width=True)
