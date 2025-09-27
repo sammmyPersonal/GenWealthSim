@@ -94,7 +94,7 @@ st.markdown(
     /* Expander headers */
     .st-expander header { 
         background-color: #d1d9ff; 
-        color: #111111 !important; 
+        color: #000000 !important; 
         font-weight: bold; 
     }
 
