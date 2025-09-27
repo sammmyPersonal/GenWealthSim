@@ -91,17 +91,31 @@ st.markdown(
         color: #000000;
     }
 
+    /* Textbox labels on main page → black */
+    .stTextInput label,
+    .stNumberInput label,
+    .stTextArea label {
+        color: #111111 !important;
+    }
+
+    /* Textbox labels in sidebar → white */
+    .stSidebar .stTextInput label,
+    .stSidebar .stNumberInput label,
+    .stSidebar .stTextArea label {
+        color: #ffffff !important;
+    }
+
     /* Expander headers */
     .st-expander header { 
         background-color: #d1d9ff; 
-        color: #000000 !important; 
+        color: #111111 !important; 
         font-weight: bold; 
     }
 
     /* Streamlit buttons */
     .stButton>button { 
         background-color: #4a90e2; 
-        color: #000000;   /* Changed button text color to black */
+        color: #000000;   /* Button text color */
     }
 
     /* Main page sliders → black labels */
@@ -118,6 +132,7 @@ st.markdown(
         color: #ffffff !important;
     }
 </style>
+
 
     """, unsafe_allow_html=True
 )
