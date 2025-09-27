@@ -226,10 +226,16 @@ fig.update_layout(
     paper_bgcolor='#f0f2f6',
     font=dict(color="#111111"),
     hovermode="x unified",
-    legend=dict(bgcolor='rgba(255,255,255,0.5)', font=dict(color="#111111"))
+    legend=dict(
+        orientation="h",       # horizontal legend
+        yanchor="top",
+        y=-0.2,                # push below the x-axis
+        xanchor="left",        # left-align
+        x=0,                   # start from left
+        bgcolor='rgba(255,255,255,0.5)',
+        font=dict(color="#111111")
+    )
 )
-
-st.plotly_chart(fig, use_container_width=True)
 
 
 # ------------------ Per-Capita Wealth Plot ------------------
