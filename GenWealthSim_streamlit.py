@@ -237,6 +237,7 @@ fig.update_layout(
     )
 )
 
+st.plotly_chart(fig, use_container_width=True)
 
 # ------------------ Per-Capita Wealth Plot ------------------
 pc_wealth = per_capita_wealth(df, family_members)
