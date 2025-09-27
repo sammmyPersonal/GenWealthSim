@@ -235,11 +235,33 @@ st.plotly_chart(fig, use_container_width=True)
 # ------------------ Per-Capita Wealth Plot ------------------
 pc_wealth = per_capita_wealth(df, family_members)
 pc_fig = go.Figure()
-pc_fig.add_trace(go.Scatter(x=pc_wealth.index, y=pc_wealth.values, mode='lines+markers', line=dict(color='#1f77b4', width=3)))
-pc_fig.update_layout(title="Per-Capita Wealth Over Time",
-                     xaxis_title="Year", yaxis_title="Value per Person ($)",
-                     plot_bgcolor='#f0f2f6', paper_bgcolor='#f0f2f6',
-                     font=dict(color="#111111"),
-                     xaxis=dict(tickfont=dict(color="#111111")),
-                     yaxis=dict(tickfont=dict(color="#111111")))
+
+pc_fig.add_trace(go.Scatter(
+    x=pc_wealth.index,
+    y=pc_wealth.values,
+    mode='lines+markers',
+    line=dict(color='#1f77b4', width=3),
+    name="Per-Capita Wealth"
+))
+
+pc_fig.update_layout(
+    title=dict(
+        text="Per-Capita Wealth Over Time",
+        font=dict(color="#111111", size=20)
+    ),
+    xaxis=dict(
+        title=dict(text="Year", font=dict(color="#111111", size=16)),
+        tickfont=dict(color="#111111")
+    ),
+    yaxis=dict(
+        title=dict(text="Value per Person ($)", font=dict(color="#111111", size=16)),
+        tickfont=dict(color="#111111")
+    ),
+    plot_bgcolor='#f0f2f6',
+    paper_bgcolor='#f0f2f6',
+    font=dict(color="#111111"),
+    hovermode="x unified",
+    legend=dict(bgcolor='rgba(255,255,255,0.5)', font=dict(color="#111111"))
+)
+
 st.plotly_chart(pc_fig, use_container_width=True)
