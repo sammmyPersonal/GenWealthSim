@@ -262,8 +262,23 @@ for i, block in enumerate(st.session_state.blocks):
             )
 
 
-        block.annual_growth = {0: start_growth, int(years/2): mid_growth}
-        block.annual_spend_rate = {0: start_spend, int(years/2): mid_spend}
+        # block.annual_growth = {0: start_growth, int(years/2): mid_growth}
+        # block.annual_spend_rate = {0: start_spend, int(years/2): mid_spend}
+
+        # Map growth sliders to their respective period start years
+        block.annual_growth = {
+            0: growth_0_33,
+            int(years/3): growth_33_66,
+            int(2*years/3): growth_66_100
+        }
+        
+        # Map spend sliders to their respective period start years
+        block.annual_spend_rate = {
+            0: spend_0_33,
+            int(years/3): spend_33_66,
+            int(2*years/3): spend_66_100
+        }
+
 
         # Optional JSON for fine control
         st.markdown("**Optional JSON input for growth/spend rates (year:value)**")
