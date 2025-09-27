@@ -72,20 +72,44 @@ st.markdown(
     """
     <style>
     /* Page background */
-    .stApp { background-color: #f0f2f6; color: #111111; }
-    /* Sidebar background */
-    .css-1d391kg { background-color: #e8eaf6; color: #111111; }
-    /* Input boxes and text areas */
-    .stTextInput>div>div>input, .stNumberInput>div>div>input, .stTextArea>div>div>textarea {
-        background-color: #ffffff; color: #111111;
+    .stApp { 
+        background-color: #f0f2f6; 
+        color: #000000; 
     }
+
+    /* Sidebar background */
+    .css-1d391kg { 
+        background-color: #e8eaf6; 
+        color: #000000; 
+    }
+
+    /* Input boxes and text areas */
+    .stTextInput>div>div>input, 
+    .stNumberInput>div>div>input, 
+    .stTextArea>div>div>textarea {
+        background-color: #ffffff; 
+        color: #000000;
+    }
+
     /* Expander headers */
-    .st-expander header { background-color: #d1d9ff; color: #111111 !important; font-weight: bold; }
+    .st-expander header { 
+        background-color: #d1d9ff; 
+        color: #000000 !important; 
+        font-weight: bold; 
+    }
+
     /* Streamlit buttons */
-    .stButton>button { background-color: #4a90e2; color: #ffffff; }
+    .stButton>button { 
+        background-color: #4a90e2; 
+        color: #000000;   /* Changed button text color to black */
+    }
+
     /* Slider labels */
-    .stSlider>div>div>div>div>div>span { color: #111111; }
-    </style>
+    .stSlider>div>div>div>div>div>span { 
+        color: #000000; 
+    }
+</style>
+
     """, unsafe_allow_html=True
 )
 
