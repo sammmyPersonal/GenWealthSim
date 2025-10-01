@@ -173,40 +173,6 @@ for i, block in enumerate(st.session_state.blocks):
         block.name = st.text_input(f"Block Name {i+1}", block.name)
         block.initial = st.number_input(f"Initial Value ({block.name})", min_value=0.0, value=float(block.initial), step=10000.0)
 
-        # # Row 1: Growth sliders
-        # growth_col1, growth_col2 = st.columns(2)
-        # with growth_col1:
-        #     start_growth = st.slider(
-        #         f"{block.name} Growth Start",
-        #         0.0, 0.2,
-        #         float(get_rate(block.annual_growth, 0)),
-        #         0.01
-        #     )
-        # with growth_col2:
-        #     mid_growth = st.slider(
-        #         f"{block.name} Growth Mid-Year",
-        #         0.0, 0.2,
-        #         float(get_rate(block.annual_growth, int(years/2))),
-        #         0.01
-        #     )
-        
-        # # Row 2: Spend sliders
-        # spend_col1, spend_col2 = st.columns(2)
-        # with spend_col1:
-        #     start_spend = st.slider(
-        #         f"{block.name} Spend Start",
-        #         0.0, 0.2,
-        #         float(get_rate(block.annual_spend_rate, 0)),
-        #         0.01
-        #     )
-        # with spend_col2:
-        #     mid_spend = st.slider(
-        #         f"{block.name} Spend Mid-Year",
-        #         0.0, 0.2,
-        #         float(get_rate(block.annual_spend_rate, int(years/2))),
-        #         0.01
-        #     )
-
         # ------------------ Sliders for growth/spend ------------------
 
         st.subheader(f"{block.name} Parameters")
@@ -261,10 +227,6 @@ for i, block in enumerate(st.session_state.blocks):
                 0.01
             )
 
-
-        # block.annual_growth = {0: start_growth, int(years/2): mid_growth}
-        # block.annual_spend_rate = {0: start_spend, int(years/2): mid_spend}
-
         # Map growth sliders to their respective period start years
         block.annual_growth = {
             0: growth_0_33,
@@ -281,16 +243,16 @@ for i, block in enumerate(st.session_state.blocks):
 
 
         # Optional JSON for fine control
-        st.markdown("**Optional JSON input for growth/spend rates (year:value)**")
-        growth_json = st.text_area(f"{block.name} Growth JSON", json.dumps(block.annual_growth))
-        spend_json = st.text_area(f"{block.name} Spend JSON", json.dumps(block.annual_spend_rate))
-        try:
-            growth_dict = {int(k): float(v) for k,v in json.loads(growth_json).items()}
-            spend_dict = {int(k): float(v) for k,v in json.loads(spend_json).items()}
-            block.annual_growth = growth_dict
-            block.annual_spend_rate = spend_dict
-        except:
-            st.warning("Invalid JSON input for growth/spend rates")
+        # st.markdown("**Optional JSON input for growth/spend rates (year:value)**")
+        # growth_json = st.text_area(f"{block.name} Growth JSON", json.dumps(block.annual_growth))
+        # spend_json = st.text_area(f"{block.name} Spend JSON", json.dumps(block.annual_spend_rate))
+        # try:
+        #     growth_dict = {int(k): float(v) for k,v in json.loads(growth_json).items()}
+        #     spend_dict = {int(k): float(v) for k,v in json.loads(spend_json).items()}
+        #     block.annual_growth = growth_dict
+        #     block.annual_spend_rate = spend_dict
+        # except:
+        #     st.warning("Invalid JSON input for growth/spend rates")
 
         # Contributions and big spends
         contrib_input = st.text_area(f"{block.name} Contributions (JSON year:value)", json.dumps(block.contributions), height=80)
