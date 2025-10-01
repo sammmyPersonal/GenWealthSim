@@ -279,11 +279,11 @@ for i, block in enumerate(st.session_state.blocks):
         # Render contribution rules
         remove_indices = []
         for i, rule in enumerate(st.session_state[f"contrib_rules_{block.name}"]):
-            st.markdown(f"**Rule {i+1}**")
+            st.markdown(f"**Contribution {i+1}**")
             cols = st.columns(3)
             with cols[0]:
                 rule["amount"] = st.number_input(
-                    f"Amount (Rule {i+1})",
+                    f"Amount (Contribution {i+1})",
                     min_value=0.0,
                     value=rule["amount"],
                     step=1000.0,
@@ -291,7 +291,7 @@ for i, block in enumerate(st.session_state.blocks):
                 )
             with cols[1]:
                 rule["start"] = st.number_input(
-                    f"Start Year (Rule {i+1})",
+                    f"Start Year (Contribution {i+1})",
                     min_value=0,
                     max_value=100,
                     value=rule["start"],
@@ -300,7 +300,7 @@ for i, block in enumerate(st.session_state.blocks):
                 )
             with cols[2]:
                 rule["years"] = st.number_input(
-                    f"Years (Rule {i+1})",
+                    f"Years (Contribution {i+1})",
                     min_value=1,
                     max_value=100,
                     value=rule["years"],
