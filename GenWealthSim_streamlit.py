@@ -63,88 +63,19 @@ def per_capita_wealth(df_total, family_members_dict):
         per_capita.loc[year] = df_total.loc[year, 'Total'] / members
     return per_capita
 
+# Loading CSS
+
+# Function to load external CSS
+def load_css(file_name):
+    with open(file_name) as f:
+        st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
+
+# Load your CSS
+load_css("style.css")
+
 # ------------------ Streamlit UI ------------------
 st.set_page_config(layout="wide")
 st.title("Generational Wealth Simulator Dashboard")
-
-# ------------------ Page Theme / CSS ------------------
-st.markdown(
-    """
-    <style>
-    /* Page background */
-    .stApp { 
-        background-color: #f0f2f6; 
-        color: #000000; 
-    }
-
-    /* Sidebar background */
-    .css-1d391kg { 
-        background-color: #e8eaf6; 
-        color: #000000; 
-    }
-
-    /* Input boxes and text areas */
-    .stTextInput>div>div>input, 
-    .stNumberInput>div>div>input, 
-    .stTextArea>div>div>textarea {
-        background-color: #ffffff; 
-        color: #000000;
-    }
-
-    /* Textbox labels on main page → black */
-    .stTextInput label,
-    .stNumberInput label,
-    .stTextArea label {
-        color: #111111 !important;
-    }
-
-    /* Textbox labels in sidebar → white */
-    .stSidebar .stTextInput label,
-    .stSidebar .stNumberInput label,
-    .stSidebar .stTextArea label {
-        color: #ffffff !important;
-    }
-
-    /* Expander headers */
-    .st-expander header { 
-        background-color: #d1d9ff; 
-        color: #111111 !important; 
-        font-weight: bold; 
-    }
-
-    .stButton > button,
-    .stButton button {
-        background-color: #4a90e2 !important;
-        color: #ffffff !important;
-        font-weight: bold;
-    }
-
-    /* Main page sliders → black labels */
-    .stSlider label, 
-    .stSlider span, 
-    .stSlider div[data-baseweb="slider"] {
-        color: #111111 !important;
-    }
-
-    /* Sidebar sliders → white labels */
-    .stSidebar .stSlider label, 
-    .stSidebar .stSlider span, 
-    .stSidebar .stSlider div[data-baseweb="slider"] {
-        color: #ffffff !important;
-    }
-
-    /* Track background (line behind handle) */
-    .stSidebar .stSlider div[data-baseweb="slider"] .baseweb-slider-horizontal .baseweb-slider-bar,
-    .stSidebar .stSlider div[data-baseweb="slider"] .baseweb-slider-horizontal .baseweb-slider-bar-background {
-        background-color: #bbbbbb !important;
-    }
-
-    
-</style>
-
-
-    """, unsafe_allow_html=True
-)
 
 # ------------------ Sidebar Inputs ------------------
 st.sidebar.header("Simulation Parameters")
