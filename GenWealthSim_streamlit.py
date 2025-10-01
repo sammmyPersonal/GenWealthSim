@@ -112,10 +112,11 @@ st.markdown(
         font-weight: bold; 
     }
 
-    /* Streamlit buttons */
-    .stButton>button { 
-        background-color: #4a90e2; 
-        color: #111111;   /* Button text color */
+    .stButton > button,
+    .stButton button {
+        background-color: #4a90e2 !important;
+        color: #ffffff !important;
+        font-weight: bold;
     }
 
     /* Main page sliders → black labels */
@@ -135,7 +136,7 @@ st.markdown(
     /* Track background (line behind handle) */
     .stSidebar .stSlider div[data-baseweb="slider"] .baseweb-slider-horizontal .baseweb-slider-bar,
     .stSidebar .stSlider div[data-baseweb="slider"] .baseweb-slider-horizontal .baseweb-slider-bar-background {
-        background-color: #bbbbbb !important;  /* lighter grey track */
+        background-color: #bbbbbb !important;
     }
 
     
