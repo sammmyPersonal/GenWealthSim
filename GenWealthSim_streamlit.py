@@ -267,38 +267,58 @@ for i, block in enumerate(st.session_state.blocks):
         #     st.warning("Invalid JSON for big spend events")
 
         st.subheader(f"{block.name} Contributions")
-        
-        # Initialise state
-        if "contrib_rules" not in st.session_state:
-            st.session_state.contrib_rules = []
+
+        # Initialise state for each block
+        if f"contrib_rules_{block.name}" not in st.session_state:
+            st.session_state[f"contrib_rules_{block.name}"] = []
         
         # Button to add a new contribution rule
-        if st.button(f"➕ Add Contributions"):
-            st.session_state.contrib_rules.append({"amount": 0.0, "start": 0, "years": 1})
+        if st.button(f"➕ Add Contributions", key=f"add_contrib_{block.name}"):
+            st.session_state[f"contrib_rules_{block.name}"].append({"amount": 0.0, "start": 0, "years": 1})
         
         # Render contribution rules
         remove_indices = []
-        for i, rule in enumerate(st.session_state.contrib_rules):
+        for i, rule in enumerate(st.session_state[f"contrib_rules_{block.name}"]):
             st.markdown(f"**Rule {i+1}**")
             cols = st.columns(3)
             with cols[0]:
-                rule["amount"] = st.number_input(f"Amount (Rule {i+1})", min_value=0.0, value=rule["amount"], step=1000.0, key=f"amount_{i}")
+                rule["amount"] = st.number_input(
+                    f"Amount (Rule {i+1})",
+                    min_value=0.0,
+                    value=rule["amount"],
+                    step=1000.0,
+                    key=f"amount_{block.name}_{i}"
+                )
             with cols[1]:
-                rule["start"] = st.number_input(f"Start Year (Rule {i+1})", min_value=0, max_value=100, value=rule["start"], step=1, key=f"start_{i}")
+                rule["start"] = st.number_input(
+                    f"Start Year (Rule {i+1})",
+                    min_value=0,
+                    max_value=100,
+                    value=rule["start"],
+                    step=1,
+                    key=f"start_{block.name}_{i}"
+                )
             with cols[2]:
-                rule["years"] = st.number_input(f"Years (Rule {i+1})", min_value=1, max_value=100, value=rule["years"], step=1, key=f"years_{i}")
+                rule["years"] = st.number_input(
+                    f"Years (Rule {i+1})",
+                    min_value=1,
+                    max_value=100,
+                    value=rule["years"],
+                    step=1,
+                    key=f"years_{block.name}_{i}"
+                )
         
             # Remove button
-            if st.button(f"❌ Remove{i+1}", key=f"remove_{i}"):
+            if st.button(f"❌ Remove {i+1}", key=f"remove_contrib_{block.name}_{i}"):
                 remove_indices.append(i)
         
         # Remove selected rules
         for idx in sorted(remove_indices, reverse=True):
-            st.session_state.contrib_rules.pop(idx)
+            st.session_state[f"contrib_rules_{block.name}"].pop(idx)
         
-        # Expand contribution rules into a year:value dict
+        # Expand contribution rules into year:value dict
         contributions = {}
-        for rule in st.session_state.contrib_rules:
+        for rule in st.session_state[f"contrib_rules_{block.name}"]:
             for yr in range(rule["start"], rule["start"] + rule["years"]):
                 contributions[yr] = contributions.get(yr, 0) + rule["amount"]
         
@@ -352,6 +372,7 @@ for i, block in enumerate(st.session_state.blocks):
             big_spend_events[rule["year"]] = big_spend_events.get(rule["year"], 0) + rule["amount"]
         
         block.big_spend_events = big_spend_events
+
 
 
 
