@@ -131,6 +131,8 @@ st.markdown(
     .stSidebar .stSlider div[data-baseweb="slider"] {
         color: #ffffff !important;
     }
+
+    
 </style>
 
 
@@ -283,7 +285,7 @@ for i, block in enumerate(st.session_state.blocks):
             cols = st.columns(3)
             with cols[0]:
                 rule["amount"] = st.number_input(
-                    f"Amount (Contribution {i+1})",
+                    f"Amount ({i+1})",
                     min_value=0.0,
                     value=rule["amount"],
                     step=1000.0,
@@ -291,7 +293,7 @@ for i, block in enumerate(st.session_state.blocks):
                 )
             with cols[1]:
                 rule["start"] = st.number_input(
-                    f"Start Year (Contribution {i+1})",
+                    f"Start Year ({i+1})",
                     min_value=0,
                     max_value=100,
                     value=rule["start"],
@@ -300,7 +302,7 @@ for i, block in enumerate(st.session_state.blocks):
                 )
             with cols[2]:
                 rule["years"] = st.number_input(
-                    f"Years (Contribution {i+1})",
+                    f"Years ({i+1})",
                     min_value=1,
                     max_value=100,
                     value=rule["years"],
@@ -342,7 +344,7 @@ for i, block in enumerate(st.session_state.blocks):
             cols = st.columns(2)
             with cols[0]:
                 rule["amount"] = st.number_input(
-                    f"Amount (Spend {i+1})",
+                    f"Amount ({i+1})",
                     min_value=0.0,
                     value=rule["amount"],
                     step=1000.0,
@@ -350,7 +352,7 @@ for i, block in enumerate(st.session_state.blocks):
                 )
             with cols[1]:
                 rule["year"] = st.number_input(
-                    f"Year (Spend {i+1})",
+                    f"Year ({i+1})",
                     min_value=0,
                     max_value=100,
                     value=rule["year"],
