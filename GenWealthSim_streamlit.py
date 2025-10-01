@@ -115,7 +115,7 @@ st.markdown(
     /* Streamlit buttons */
     .stButton>button { 
         background-color: #4a90e2; 
-        color: #000000;   /* Button text color */
+        color: #111111;   /* Button text color */
     }
 
     /* Main page sliders → black labels */
