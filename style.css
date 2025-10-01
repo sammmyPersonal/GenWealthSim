@@ -1,0 +1,67 @@
+/* Page background */
+.stApp { 
+    background-color: #f0f2f6; 
+    color: #000000; 
+}
+
+/* Sidebar background */
+.css-1d391kg { 
+    background-color: #e8eaf6; 
+    color: #000000; 
+}
+
+/* Input boxes and text areas */
+.stTextInput>div>div>input, 
+.stNumberInput>div>div>input, 
+.stTextArea>div>div>textarea {
+    background-color: #ffffff; 
+    color: #000000;
+}
+
+/* Textbox labels on main page → black */
+.stTextInput label,
+.stNumberInput label,
+.stTextArea label {
+    color: #111111 !important;
+}
+
+/* Textbox labels in sidebar → white */
+.stSidebar .stTextInput label,
+.stSidebar .stNumberInput label,
+.stSidebar .stTextArea label {
+    color: #ffffff !important;
+}
+
+/* Expander headers */
+.st-expander header { 
+    background-color: #d1d9ff; 
+    color: #111111 !important; 
+    font-weight: bold; 
+}
+
+.stButton > button,
+.stButton button {
+    background-color: #4a90e2 !important;
+    color: #ffffff !important;
+    font-weight: bold;
+}
+
+/* Main page sliders → black labels */
+.stSlider label, 
+.stSlider span, 
+.stSlider div[data-baseweb="slider"] {
+    color: #111111 !important;
+}
+
+/* Sidebar sliders → white labels */
+.stSidebar .stSlider label, 
+.stSidebar .stSlider span, 
+.stSidebar .stSlider div[data-baseweb="slider"] {
+    color: #ffffff !important;
+}
+
+/* Track background (line behind handle) */
+.stSidebar .stSlider div[data-baseweb="slider"] .baseweb-slider-horizontal .baseweb-slider-bar,
+.stSidebar .stSlider div[data-baseweb="slider"] .baseweb-slider-horizontal .baseweb-slider-bar-background {
+    background-color: #bbbbbb !important;
+}
