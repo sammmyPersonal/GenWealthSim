@@ -132,6 +132,12 @@ st.markdown(
         color: #ffffff !important;
     }
 
+    /* Track background (line behind handle) */
+    .stSidebar .stSlider div[data-baseweb="slider"] .baseweb-slider-horizontal .baseweb-slider-bar,
+    .stSidebar .stSlider div[data-baseweb="slider"] .baseweb-slider-horizontal .baseweb-slider-bar-background {
+        background-color: #bbbbbb !important;  /* lighter grey track */
+    }
+
     
 </style>
 
